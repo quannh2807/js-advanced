@@ -21,7 +21,7 @@
 <body>
 
     <ul id="target"></ul>
-
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
     <script>
         let users = [
             { id: 1, name: "Nguyen Hong Quan", gender: 1 },
@@ -32,8 +32,12 @@
         ];
 
         let content = '';
-        users.forEach(user => {
-            content += `<li class="user_item">${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
+        // users.forEach(user => {
+        //     content += `<li class="user_item">${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
+        // });
+
+        _.map(users, (user) => {
+            return content += `<li class="user_item">${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
         });
 
         document.querySelector('ul#target').innerHTML = content;
