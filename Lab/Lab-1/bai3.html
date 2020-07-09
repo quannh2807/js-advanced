@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 3 - Lab 1</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        .user_item {
+            color: green;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul id="target"></ul>
+
+    <script>
+        let users = [
+            { id: 1, name: "Nguyen Hong Quan", gender: 1 },
+            { id: 2, name: "Nguyen Van A", gender: 2 },
+            { id: 3, name: "Nguyen Van B", gender: 1 },
+            { id: 4, name: "Nguyen Van C", gender: 2 },
+            { id: 5, name: "Nguyen Van E", gender: 1 }
+        ];
+
+        let content = '';
+        users.forEach(user => {
+            content += `<li class="user_item">${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
+        });
+
+        document.querySelector('ul#target').innerHTML = content;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 4 - Lab 1</title>
+    <style>
+        .user_item {
+            color: green;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    ID&nbsp;<input data-target="id" type="text" type="number"><br>
+    Name&nbsp;<input data-target="name" type="text"><br>
+    Gender&nbsp;<select data-target="gender">
+        <option value="1">Male</option>
+        <option value="2">Female</option>
+    </select><br>
+
+    <input type="button" id="btn" value="Add">
+
+    <ul id="target"></ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script>
+        let users = [
+            { id: 1, name: "Nguyen Hong Quan", gender: 1 },
+            { id: 2, name: "Nguyen Van A", gender: 2 },
+            { id: 3, name: "Nguyen Van B", gender: 1 },
+            { id: 4, name: "Nguyen Van C", gender: 2 },
+            { id: 5, name: "Nguyen Van E", gender: 1 }
+        ];
+
+        var content = '';
+        for (let user of users) {
+            content += `<li  class="user_item">${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
+        };
+        document.querySelector('#target').innerHTML = content;
+
+        let click = document.querySelector('#btn');
+        click.onclick = function () {
+            let id = document.querySelector('input[data-target=id]');
+            let name = document.querySelector('input[data-target=name]');
+            let gender = document.querySelector('select[data-target=gender]');
+
+            users.push({
+                id: id.value,
+                name: name.value,
+                gender: gender.value
+            });
+
+            content = '';
+            for (let user of users) {
+                content += `<li>${user.id} - ${user.name} - ${(user.gender === 1) ? 'male' : 'female'}</li>`;
+            };
+            document.querySelector('#target').innerHTML = content;
+        };
+
+    </script>
+</body>
+
+</html>

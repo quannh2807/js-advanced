@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .color {
+            height: 200px;
+            width: 200px;
+            background: rgb(194, 71, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text">
+    <input type="text">
+    <input type="text">
+    <input type="text">
+    <br>
+    <h2>Nguyen Hong Quan</h2>
+    <div class="color"></div>
+    <script>
+        /**
+         * Tao su kien the input
+         * Khi nhap du lieu vao the input thi thay doi the h2
+         */
+        let inputTags = document.querySelectorAll('input');
+        let headingTag = document.querySelector('h2');
+
+        for (let index = 0; index < inputTags.length; index++) {
+            inputTags[index].onkeyup = function () {
+                return headingTag.innerText = this.value;
+            };
+
+        }
+
+        let color = document.querySelector('.color');
+        color.onmouseover = (event) => event.target.style.background = 'rgb(194, 71, 0)';
+        color.onmouseout = (event) => event.target.style.background = 'rgb(0, 255, 0)';
+
+    </script>
+</body>
+
+</html>

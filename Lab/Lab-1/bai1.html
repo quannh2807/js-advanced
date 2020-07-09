@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 1 - Lab 1</title>
+    <style>
+        #target {
+            width: 60px;
+            height: 60px;
+            background: #e44800;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="target"></div>
+    <script>
+        let target = document.querySelector("#target");
+
+        target.onmouseover = (event) => event.target.style.background = '#e44800';
+        target.onmouseout = (event) => event.target.style.background = '#6ffd37';
+    </script>
+</body>
+
+</html>

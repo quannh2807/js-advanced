@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p id="p-101" tag-color="yellow" class="btn btn-sm" onclick="setValue(this)">ABC-101</p>
+    <p id="p-102" tag-color="brown" onclick="setValue(this)">ABC-102</p>
+    <p id="p-103" tag-color="brown" onclick="setValue(this)">ABC-103</p>
+
+    <input type="text" id="target" value="">
+
+    <script>
+        /* let pTag = document.querySelector('p');
+        pTag.style.fontFamily = 'sans-serif';
+
+        let fontSize = 76;
+            setInterval(() => {
+                fontSize += 5;
+                pTag.style.fontSize = fontSize + "px";
+            }, 5000);
+        let pTag = document.querySelector('p');
+        console.log(pTag.id);
+        */
+
+        function getUserId(element) {
+            // console.log(element.id.substring(2, element.id.length));
+            console.log(element.className);
+            element.className = element.className + " btn-danger";
+            console.log(element.className);
+        }
+
+        function setStyle(ele) {
+            ele.style.color = 'red';
+            console.log(ele.style);
+        }
+
+        let pList = document.querySelectorAll("#p-101");
+        console.log(pList);
+
+        function setValue(ele) {
+            console.log(ele.innerText);
+            document.querySelector("#target").setAttribute('value', ele.innerText);
+        }
+    </script>
+</body>
+
+</html>
