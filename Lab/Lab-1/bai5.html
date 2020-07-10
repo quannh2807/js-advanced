@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 5 - Lab 1</title>
+    <style>
+        .input,
+        .show {
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+
+        .input input {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input">
+        Date<input type="number" name="" id="date"><br>
+        Month<input type="number" name="" id="month"><br>
+        Year<input type="number" name="" id="year"><br>
+        <input type="button" class="btn" value="Convert">
+    </div>
+    <div class="show"></div>
+    <script src="./node_modules/moment/moment.js"></script>
+
+    <script>
+        let dateBtn = document.querySelector('#date');
+        let monthBtn = document.querySelector('#month');
+        let yearBtn = document.querySelector('#year');
+        let button = document.querySelector('.btn');
+        let show = document.querySelector('.show');
+
+        button.onclick = () => {
+            let date = dateBtn.value;
+            let month = monthBtn.value;
+            let year = yearBtn.value;
+
+            let result = [date, month, year];
+            let content = '';
+            let format1 = moment(result.join('-')).format('YYYY-MM-DD');
+            let format2 = moment(result.join('-')).format('DD/MM/YYYY');
+            let format3 = moment(result.join('-')).format('DD.MM.YYYY');
+            let format4 = moment(result.join('-')).format('DD, MMM YYYY');
+            let format5 = moment(result.join('-')).format('DD, MMMM YYYY');
+            content += `<h3>${format1}</h3><h3>${format2}</h3><h3>${format3}</h3><h3>${format4}</h3><h3>${format5}</h3>`;
+            show.innerHTML = content;
+        };
+    </script>
+</body>
+
+</html>
