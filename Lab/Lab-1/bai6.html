@@ -43,7 +43,7 @@
 
             let result = [date, month, year];
             let content = '';
-            let format1 = moment(result.join('-'), 'YYYY/MM/DD').format('dddd');
+            let format1 = moment(result.join('-'), 'DD-MM-YYYY').format('dddd');
             content += `<h3>${format1}</h3>`;
             show.innerHTML = content;
         };

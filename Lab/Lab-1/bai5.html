@@ -42,11 +42,11 @@
 
             let result = [date, month, year];
             let content = '';
-            let format1 = moment(result.join('-')).format('YYYY-MM-DD');
-            let format2 = moment(result.join('-')).format('DD/MM/YYYY');
-            let format3 = moment(result.join('-')).format('DD.MM.YYYY');
-            let format4 = moment(result.join('-')).format('DD, MMM YYYY');
-            let format5 = moment(result.join('-')).format('DD, MMMM YYYY');
+            let format1 = moment(result.join('-'), 'DD-MM-YYYY').format('YYYY-MM-DD');
+            let format2 = moment(result.join('-'), 'DD-MM-YYYY').format('DD/MM/YYYY');
+            let format3 = moment(result.join('-'), 'DD-MM-YYYY').format('DD.MM.YYYY');
+            let format4 = moment(result.join('-'), 'DD-MM-YYYY').format('DD, MMM YYYY');
+            let format5 = moment(result.join('-'), 'DD-MM-YYYY').format('DD, MMMM YYYY');
             content += `<h3>${format1}</h3><h3>${format2}</h3><h3>${format3}</h3><h3>${format4}</h3><h3>${format5}</h3>`;
             show.innerHTML = content;
         };

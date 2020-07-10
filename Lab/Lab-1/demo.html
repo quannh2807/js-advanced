@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script src="./node_modules/moment/moment.js"></script>
+    <script>
+        let day = moment().format('DD MMM YYYY');
+        let now = moment();
+        let postTime = moment("2020-07-09 12:00:00");
+
+        console.log(now.diff(postTime, 'seconds'));
+
+    </script>
+</body>
+
+</html>
