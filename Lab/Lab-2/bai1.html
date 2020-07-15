@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 1 - Lab 2</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    String <input type="text" name="" id="">&nbsp;
+    <input type="button" value="Count">
+    <h2></h2>
+
+    <script>
+        let h2Tag = document.querySelector('h2');
+        let input = document.querySelector('input[type=text]');
+        let button =  document.querySelector('input[type=button]');
+
+        button.onclick = () => {
+            h2Tag.innerText = input.value.length;
+        };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bai 2 - Lab 2</title>
+</head>
+
+<body>
+    String <input type="text"> <br>
+    Number <input type="number"> <br>
+    <input type="button" value="Convert">
+    <h1></h1>
+
+    <script>
+        let h1Tag = document.querySelector('h1');
+        let string = document.querySelector('input[type=text]');
+        let number = document.querySelector('input[type=number]');
+
+
+        let btn = document.querySelector('input[type=button]');
+
+        btn.onclick = function () {
+
+            if (number.value > string.value.length) {
+                return h1Tag.innerText = `Độ dài nhập vào không được vượt quá độ dài chuỗi. Chuỗi hiện tại có độ dài là ${string.value.length}`;
+            } else {
+                let arr = string.value.split('');
+
+                arr.splice(arr[index + 1], 0, '.');
+                console.log(arr.join(''));
+
+                let result;
+                return h1Tag.innerText = result;
+            }
+        };
+    </script>
+</body>
+
+</html>

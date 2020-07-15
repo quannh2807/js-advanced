@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label for="">So dien thoai</label>
+        <input type="text" name="" id="phonenumber">
+        <br>
+        <div class="error" id="validateMsg"></div>
+    </div>
+    <script>
+        let input = document.querySelector('#phonenumber');
+        let msg = document.querySelector('#validateMsg');
+
+        input.onblur = function() {
+            let value = this.value;
+            let pattern = /^(09|03)([0-9]{8})\b/;
+            let check = pattern.test(value);
+            if(!check) {
+                msg.innerText = "Khong nhap dung so dien thoai";
+            }else {
+                msg.innerText = 'Ban da nhap dung so dien thoai';
+            }
+
+        };
+    </script>
+</body>
+</html>

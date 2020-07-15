@@ -7,3 +7,9 @@
 + onclick, onkeydown, onkeyup, onchange, onsubmit
 - Hàm built-in:
 + splice(start, delete, value1, value2 ...); thay thế vị trí của phần tử start thêm value
+
+## 2. Các hàm Built-in
+- String:
+- Regex
+- Ngoại lệ trong JS
+## 3. Hướng đối tượng ES5 (ECMA5)
