@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            .color {
+                background: #ff0000;
+                width: 100px;
+                height: 100px;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="color"></div>
+        <button>Change Color</button>
+
+        <script>
+            function randomColor() {
+                return "#" + Math.floor(Math.random() * 16777215).toString(16);
+            }
+
+            let btn = document.querySelector('button');
+            let colorArea = document.querySelector('.color');
+
+            btn.onclick = function() {
+                setTimeout(() => colorArea.style.background = randomColor(), 1000);
+            }
+        </script>
+    </body>
+</html>

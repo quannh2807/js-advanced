@@ -13,3 +13,9 @@
 - Regex
 - Ngoại lệ trong JS
 ## 3. Hướng đối tượng ES5 (ECMA5)
+- học ECMAScript
+## 5. Xử lý bất đồng bộ
+- Đặt tên cho callback
+- Promise
+    + sử dung resolve thì sử dụng then
+    + sử dung reject thì sử dụng catch

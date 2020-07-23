@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <div>
+            <input type="text" id="input" />&nbsp;
+            <input type="button" value="Enter" />
+            <ul></ul>
+        </div>
+        <script>
+            let list = [];
+
+            let btn = document.querySelector("input[type=button]");
+            let inputTag = document.querySelector("#input");
+            let ulTag = document.querySelector("ul");
+
+            btn.onclick = function () {
+                if (inputTag.value.length <= 0) {
+                    alert("Hay nhap vao ten sinh vien !");
+                    break;
+                } else {
+                    let result = "";
+                    list.push(inputTag.value);
+                    list.sort().forEach((element) => {
+                        result += `<li>${element}</li>`;
+                    });
+                    return (ulTag.innerHTML = result);
+                }
+            };
+        </script>
+    </body>
+</html>

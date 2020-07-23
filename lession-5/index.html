@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lession 5</title>
+    </head>
+    <body>
+        <script>
+            // setTimeout(() => {
+            //     console.log(1);
+            // }, 1000);
+            // console.log(2);
+
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    try {
+                        console.log(1);
+                        return resolve(1000);
+                    } catch (error) {
+                        return reject(100);
+                    }
+                }, 1000);
+            })
+                .then((data) => {
+                    console.log(data);
+                })
+                .catch(() => {
+                    console.log("Lỗi");
+                });
+        </script>
+    </body>
+</html>
