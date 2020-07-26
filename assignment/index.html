@@ -6,16 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Assignment - PT5111 WEB</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/micromodal.css">
+
+
 </head>
 
 <body>
     <div class="container">
         <!-- Modal -->
-        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-
+        <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+            <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+                <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                    <header class="modal__header">
+                        <h2 class="modal__title" id="modal-1-title">
+                            <!-- Set data -->
+                        </h2>
+                        <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
+                    </header>
+                    <main class="modal__content" id="modal-1-content">
+                        <!-- Set data -->
+                    </main>
+                    <footer class="modal__footer">
+                        <button class="modal__btn modal__btn-primary" id="modal__btn-action">Continue</button>
+                        <button class="modal__btn" data-micromodal-close
+                            aria-label="Close this dialog window">Close</button>
+                    </footer>
                 </div>
             </div>
         </div>
@@ -29,29 +44,24 @@
                     <th>Image</th>
                     <th>Cate_id</th>
                     <th>Price</th>
-                    <th>Action</th>
+                    <th>
+                        <button class="btn btn-outline-primary" >Add</button>
+                    </th>
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
-    <script>
-        // Modal Boostsap
-        $("#myModal").on("shown.bs.modal", function () {
-            $("#myInput").trigger("focus");
-        });
-    </script>
-    <script src="./js/main.js"></script>
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <!-- Micromodal -->
+    <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script>
+    <script src="./js/axios.js"></script>
+    <!-- <script src="./js/main.js"></script> -->
     <script>
         SystemCore.fetchData();
     </script>

@@ -35,3 +35,5 @@
 -   JSON
     -   `JSON.parse(str)` đưa 1 chuỗi sang json
     -   `JSON/stringfy(objjson)` đưa 1 đối tượng json sang chuỗi
+
+## 7. Async Await
