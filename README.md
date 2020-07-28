@@ -35,5 +35,7 @@
 -   JSON
     -   `JSON.parse(str)` đưa 1 chuỗi sang json
     -   `JSON/stringfy(objjson)` đưa 1 đối tượng json sang chuỗi
-
+-   AJAX: tại sao lại đặt sự kiện vào thẻ button khi render view ?
+    + Xác định phần nào của giao diện sinh ra từ api (HTML có sau khi js chạy được)
+    -> bắt buộc phải làm cách đó ms chạy được
 ## 7. Async Await
