@@ -170,9 +170,13 @@ window.SystemCore = {
                     document.querySelector(
                         `#data-${id} td[data-target=image] img`
                     ).src = result.image;
+                    // đóng modal
+                    setTimeout(() => {
+                        document.querySelector(".js-modal-close-trigger").click();
+                    }, 1000);
                 }
             })
-            .catch((error) => alert('Cap nhat khong thanh cong'));
+            .catch((error) => alert("Cập nhật không thành công " + error));
     },
 
     add: function () {
@@ -185,9 +189,11 @@ window.SystemCore = {
                 price: document.querySelector("input[name=price]").value,
                 short_desc: document.querySelector("input[name=short_desc]")
                     .value,
+                image: document.querySelector('input[name=image]').value
             };
+            debugger;
 
-            fetch(this.baseApiUrl, {
+            fetch(SystemCore.baseApiUrl, {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
