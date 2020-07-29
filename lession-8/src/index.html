@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment - Firebase Firestore</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container">
+    <fieldset>
+      <legend>tạo mới bệnh viện</legend>
+      <div>
+        <label>nane</label>
+        <input type="text" name="name">
+      </div>
+      <div>
+        <label>address</label>
+        <input type="text" name="address">
+      </div>
+      <div>
+        <label>logo</label>
+        <input type="text" name="logo_url">
+      </div>
+      <div>
+        <label>bed number</label>
+        <input type="number" name="bed_number">
+      </div>
+      <div>
+        <input type="button" value="Luu" onclick="saveHospital()">
+      </div>
+    </fieldset>
+
+    <table class="table">
+      <thead>
+        <th scope="col">Bệnh viện</th>
+        <th scope="col">Địa chỉ</th>
+        <th scope="col">Số giường</th>
+        <th scope="col">Logo</th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-firestore.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyA-hzX7DiCU0W80PvR9sCILIQcRYbgmx-I",
+      authDomain: "quannhph09166.firebaseapp.com",
+      databaseURL: "https://quannhph09166.firebaseio.com",
+      projectId: "quannhph09166",
+      storageBucket: "quannhph09166.appspot.com",
+      messagingSenderId: "22450184205",
+      appId: "1:22450184205:web:075bc7621186843d5eb544"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    // firebase.analytics();
+
+    // Get a reference to the database service
+    var db = firebase.firestore();
+
+    db.collection("hospitals")
+      .orderBy("bed_number")
+      .get()
+      .then(querySnapshot => {
+        let content = ``;
+        querySnapshot.forEach(doc => {
+          let item = doc.data();
+          content += `
+            <tr>
+              <td>${item.name}</td>
+              <td>${item.address}</td>
+              <td>${item.bed_number}</td>
+              <td>
+                <img src="${item.logo_url}" class="img-fluid" />
+              </td>
+            </tr>
+          `;
+        });
+
+        document.querySelector('tbody').innerHTML = content;
+      })
+      .catch(error => {
+        console.log("Error getting document:", error);
+      });
+
+    function saveHospital() {
+      let data = {
+        name: document.querySelector('input[name="name"]').value,
+        address: document.querySelector('input[name="address"]').value,
+        logo_url: document.querySelector('input[name="logo_url"]').value,
+        bed_number: document.querySelector('input[name="name"]').value,
+      };
+
+      let newHospital = db.collection('hospitals').doc();
+      newHospital.set(data);
+      document.querySelector('input[name="name"]').value = '';
+      document.querySelector('input[name="address"]').value = '';
+      document.querySelector('input[name="logo_url"]').value = '';
+      document.querySelector('input[name="name"]').value = '';
+
+      document.querySelector('tbody').innerHTML += `
+        <tr>
+          <td>${data.name}</td>
+          <td>${data.address}</td>
+          <td>${data.bed_number}</td>
+          <td>
+            <img src="${data.logo_url}" class="img-fluid" />
+          </td>
+        </tr>
+      `;
+    }
+  </script>
+</body>
+
+</html>
