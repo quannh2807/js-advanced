@@ -172,7 +172,9 @@ window.SystemCore = {
                     ).src = result.image;
                     // đóng modal
                     setTimeout(() => {
-                        document.querySelector(".js-modal-close-trigger").click();
+                        document
+                            .querySelector(".js-modal-close-trigger")
+                            .click();
                     }, 1000);
                 }
             })
@@ -189,7 +191,7 @@ window.SystemCore = {
                 price: document.querySelector("input[name=price]").value,
                 short_desc: document.querySelector("input[name=short_desc]")
                     .value,
-                image: document.querySelector('input[name=image]').value
+                image: document.querySelector("input[name=image]").value,
             };
             debugger;
 
@@ -202,7 +204,28 @@ window.SystemCore = {
                 body: JSON.stringify(data),
             })
                 .then((res) => res.json())
-                .then((obj) => console.log(obj));
+                .then((item) => {
+                    let newRow = `<tr id="data-${item.id}">
+                                        <td data-target="id">${item.id}</td>
+                                        <td data-target="name">${item.name}</td>
+                                        <td data-target="image"><img src="${item.image}" class="img-fluid" width=150 /></td>
+                                        <td data-target="price">${item.price}$</td>
+                                        <td>
+                                            <button class="btn btn-outline-danger mx-1"
+                                                onclick="SystemCore.remove(${item.id})">Xoa</button>
+                                            <button class="btn btn-outline-info"
+                                                onclick="SystemCore.detail(${item.id})"
+                                            >Chi tiet</button>
+                                        </td>
+                                    </tr>`;
+
+                    let content = document.querySelector("tbody").innerHTML;
+                    content += newRow;
+                    document.querySelector("tbody").innerHTML = content;
+                    setTimeout(() => {
+                        document.querySelector(".js-modal-cancel").click();
+                    }, 1000);
+                });
         };
     },
 };
