@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2></h2>
+    <ul></ul>
+
+    <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const hoteId = urlParams.get('id');
+
+        axios({
+            method: "GET",
+            url: `https://5f1a7521610bde0016fd292c.mockapi.io/quannh/hotels/${hoteId}`,
+            responseType: 'json'
+        })
+        .then(res => {
+            document.querySelector('h2').innerHTML = `Hotel: ${res.data.name} - ${res.data.address}`;
+        });
+
+        axios({
+            method: "GET",
+            url: `https://5f1a7521610bde0016fd292c.mockapi.io/quannh/hotels/${hoteId}/rooms`,
+            responseType: 'json'
+        })
+        .then(res => {
+            let content = `<h3>List rooms</h3>`;
+            res.data.map((item) => {
+                content += `<li>${item.floor} - ${item.room_number}</li>`;
+            });
+            document.querySelector('ul').innerHTML = content;
+        });
+    </script>
+</body>
+
+</html>
