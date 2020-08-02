@@ -39,3 +39,4 @@
     + Xác định phần nào của giao diện sinh ra từ api (HTML có sau khi js chạy được)
     -> bắt buộc phải làm cách đó ms chạy được
 ## 7. Async Await
+## 9. Jquery
