@@ -16,6 +16,7 @@ window.customFirebase = {
 
     return firebase.firestore();
   },
+
   isEqual: function (objA, objB) {
     // Tạo các mảng chứa tên các property
     let aProps = Object.getOwnPropertyNames(objA);
@@ -38,27 +39,4 @@ window.customFirebase = {
     // tức là 2 objects được tính lằ bằng nhau.
     return true;
   },
-
-  // fetchAll: function (collectionName) {
-  //   return customFirebase.getConnect().collection(collectionName).get();
-  // },
-
-  // findById: function (db, collectionName, documentId) {
-  //   return db.collection(collectionName)
-  //     .doc(documentId)
-  //     .get();
-  // },
-
-  // update: function (
-  //   db = this.getConnect,
-  //   collectionName,
-  //   documentId,
-  //   data = {}
-  // ) {
-  //   return db.collection(collectionName).doc(documentId).update(data);
-  // },
-
-  // delete: function (db = this.getConnect, collectionName, documentId) {
-  //   return db.collection(collectionName).doc(documentId).delete();
-  // },
 };

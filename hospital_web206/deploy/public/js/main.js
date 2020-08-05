@@ -30,7 +30,7 @@ window.hospitals = {
         );
         $("tbody").html(content);
       })
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   },
 
   remove: function (hospitalId) {
@@ -43,17 +43,18 @@ window.hospitals = {
       cancelButtonColor: "#3085d6",
       cancelButtonText: "hợp lý",
       confirmButtonText: "méo quan tâm",
-    }).then((result) => {
-      if (result.value) {
-        this.db
-          .collection("hospitals")
-          .doc(hospitalId)
-          .delete()
-          .then(() => $(`#row-${hospitalId}`).remove())
-          .catch((error) => console.log(error));
-      }
     })
-    .catch(error => console.log(error));
+      .then((result) => {
+        if (result.value) {
+          this.db
+            .collection("hospitals")
+            .doc(hospitalId)
+            .delete()
+            .then(() => $(`#row-${hospitalId}`).remove())
+            .catch((error) => console.log(error));
+        }
+      })
+      .catch((error) => console.log(error));
   },
 
   create: function () {
@@ -130,7 +131,7 @@ window.hospitals = {
             `;
             $("#modal-1").modal("hide");
           })
-          .catch(error => console.log(error));
+          .catch((error) => console.log(error));
       } else {
         console.log("Not Valid");
       }
@@ -156,6 +157,53 @@ window.hospitals = {
         }
 
         $(".modal .modal-footer .save-update").click(() => {
+          $("#create-hospital").validate({
+            rules: {
+              name: {
+                required: true,
+                maxlength: 191,
+                minlength: 2,
+              },
+              address: {
+                required: true,
+                maxlength: 191,
+              },
+              bed_numbers: {
+                required: true,
+                number: true,
+                maxlength: 191,
+              },
+              logo: {
+                required: true,
+                maxlength: 191,
+              },
+            },
+            messages: {
+              name: {
+                required: "Nhập tên bệnh",
+                maxlength: "Độ dài tối đa là 191 ký tự",
+                minlength: "Độ dài tối thiểu là 2 ký tự",
+              },
+              address: {
+                required: "Nhập địa chỉ bệnh",
+                maxlength: "Độ dài tối đa là 191 ký tự",
+              },
+              bed_numbers: {
+                required: "Nhập số giường bệnh",
+                number: "Chỉ nhập số",
+                maxlength: "Độ dài tối đa là 191 ký tự",
+              },
+              logo: {
+                required: "Nhập logo bệnh viện",
+                maxlength: "Độ dài tối đa là 191 ký tự",
+              },
+            },
+          });
+
+          if (!$("#create-hospital").valid()) {
+            return false;
+          }
+
           let newData = {
             name: $(".modal .modal-body input[name=name]").val(),
             address: $(".modal .modal-body input[name=address]").val(),
@@ -182,13 +230,13 @@ window.hospitals = {
               $(`#row-${hospitalId} td#name`).text(newData.name);
               $(`#row-${hospitalId} td#address`).text(newData.address);
               $(`#row-${hospitalId} td#bed_numbers`).text(newData.bed_numbers);
-              $(`#row-${hospitalId} td#logo img`).attr('src', newData.logo);
+              $(`#row-${hospitalId} td#logo img`).attr("src", newData.logo);
 
-              return $('#modal-1').modal('hide');
+              return $("#modal-1").modal("hide");
             })
-            .catch(error => console.log(error));
-        })
-        .catch(error => console.log(error));
-      });
+            .catch((error) => console.log(error));
+        });
+      })
+      .catch((error) => console.log(error));
   },
 };

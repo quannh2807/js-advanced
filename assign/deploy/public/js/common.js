@@ -17,4 +17,8 @@ window.customFirebase = {
 
     return firebase.firestore();
   },
+
+  fetchAll: function () {
+
+  }
 };
