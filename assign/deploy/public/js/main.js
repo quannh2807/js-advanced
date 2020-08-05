@@ -1,6 +1,7 @@
 const hotels = {
+  db: customFirebase.getConnect(),
   getAllData: function () {
-    db.collection("hotels")
+    this.db.collection("hotels")
       .orderBy("name")
       .get()
       .then((result) => {
@@ -37,7 +38,7 @@ const hotels = {
       confirmButtonText: "méo quan tâm",
     }).then((result) => {
       if (result.value) {
-        db.collection("hotels")
+        this.db.collection("hotels")
           .doc(id)
           .delete()
           .then(() => document.querySelector(`#row-${id}`).remove())
@@ -70,7 +71,7 @@ const hotels = {
         alert("Nhập thông tin khách sạn vào trước");
       } else {
         // Add a new document with a generated id.
-        db.collection("hotels")
+        this.db.collection("hotels")
           .add(data)
           .then(function (doc) {
             console.log("Document written with ID: ", doc.id);
@@ -98,7 +99,7 @@ const hotels = {
   },
 
   getOne: function (id) {
-    db.collection("hotels")
+    this.db.collection("hotels")
       .doc(id)
       .get()
       .then((result) => {
@@ -134,7 +135,7 @@ const hotels = {
 
   edit: function (id) {
     // get data truyen vao input
-    db.collection("hotels")
+    this.db.collection("hotels")
       .doc(id)
       .get()
       .then((result) => {
@@ -178,7 +179,7 @@ const hotels = {
           ) {
             alert("Xin Mời Nhập Thông Tin Khách Sạn!");
           } else {
-            db.collection("hotels").doc(id).update(data);
+            this.db.collection("hotels").doc(id).update(data);
             console.log("Success!");
             /**
              * ! sua data tren UI
