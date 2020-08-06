@@ -39,14 +39,58 @@
           <th scrope="col">Patient address</th>
           <th scrope="col">Bed number</th>
           <th scrope="col">Patient logo</th>
+          <th scrope="col">Patient avatar</th>
           <th scrope="col">
-            <button class="btn btn-outline-primary btn-create-hotel" onclick="patients.create()">Create</button>
+            <button class="btn btn-outline-primary btn-create-hotel" onclick="patients.createPatient()">Create</button>
           </th>
         </tr>
       </thead>
 
       <tbody></tbody>
     </table>
+  </div>
+
+  <!-- Bootstrap Create/Update Modal -->
+  <div class="modal" id="modal-1" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create patient</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="create-patient">
+            <div class="form group">
+              <label for="name">Patient name</label>
+              <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form group">
+              <label for="age">Patient age</label>
+              <input type="text" name="age" class="form-control">
+            </div>
+            <div class="form group">
+              <label for="address">Patient address</label>
+              <input type="text" name="address" class="form-control">
+            </div>
+            <div class="form group">
+              <label for="bed_no">Patient bed no</label>
+              <input type="text" name="bed_no" class="form-control">
+            </div>
+            <div class="form group">
+              <label for="avatar">Patient avatar <span class="text-danger">just link</span></label>
+              <input type="text" name="avatar" class="form-control">
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary save-create save-update">Save create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Jquery CDN -->
@@ -70,7 +114,6 @@
   <!-- My custom js -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(urlParams);
     const hospitalId = urlParams.get('hospitalId');
   </script>
   <script src="./public/js/common.js"></script>

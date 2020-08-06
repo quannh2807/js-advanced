@@ -56,11 +56,16 @@ window.customFirebase = {
     return database.collection(collectionName).doc(id).update(data);
   },
 
-  delete: function (database, collectionName, id) {
-    return database.collection(collectionName).delete(id);
+  deleteById: function (database, collectionName, id) {
+    return database.collection(collectionName).doc(id).delete();
   },
 
   createWithoutId: function (database, collectionName, data) {
     return database.collection(collectionName).add(data);
-  }
+  },
 };
+
+const defaultImage = [
+  "https://i.ibb.co/GvV9F8G/IMAG0450.jpg",
+  "https://i.ibb.co/vLSQ5kR/IMAG0464.jpg"
+];
