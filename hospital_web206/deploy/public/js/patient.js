@@ -11,8 +11,10 @@ window.patients = {
 
     patientData.then((querySnapShot) => {
       let content = ``;
+      let index = 1;
       querySnapShot.forEach((doc) => {
         content += `<tr id="row-${doc.id}">
+                      <td id="index">${index++}</td>
                       <td id="name">${doc.data().name}</td>
                       <td id="age">${doc.data().age}</td>
                       <td id="bed_no">${doc.data().bed_no}</td>
@@ -78,6 +80,7 @@ window.patients = {
         },
         avatar: {
           required: false,
+          url: true
         },
       },
       messages: {
@@ -102,6 +105,9 @@ window.patients = {
           min: "Số giường bệnh tối thiểu là 1",
           max: "Số giường bệnh tối đa là 999",
         },
+        avatar: {
+          url: "Avatar nhập vào có dạng đường link"
+        }
       },
     });
 
@@ -122,9 +128,11 @@ window.patients = {
           .createWithoutId(this.db, "patients", patientData)
           .then((snapShot) => {
             console.log("Document written with ID: ", snapShot.id, snapShot);
+            let index = $('tr td#index').length;
             // add row
             document.querySelector("tbody").innerHTML += `
           <tr id="row-${snapShot.id}">
+            <td id="index">${++index}</td>
             <td id="name">${patientData.name}</td>
             <td id="age">${patientData.age}</td>
             <td id="bed_no">${patientData.bed_no}</td>

@@ -40,3 +40,4 @@
     -> bắt buộc phải làm cách đó ms chạy được
 ## 7. Async Await
 ## 9. Jquery
+## 10. Jquery DOM Traversing

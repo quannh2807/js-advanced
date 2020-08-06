@@ -7,10 +7,12 @@ window.hospitals = {
       .get()
       .then((snapShot) => {
         let content = ``;
+        let index = 1;
         snapShot.forEach(
           (result) =>
             (content += `
             <tr id="row-${result.id}">
+              <td id="index">${index++}</td>
               <td id="name">${result.data().name}</td>
               <td id="address">${result.data().address}</td>
               <td id="bed_numbers">${result.data().bed_numbers}</td>
@@ -100,7 +102,7 @@ window.hospitals = {
         },
         logo: {
           required: true,
-          maxlength: 191,
+          url: true
         },
       },
       messages: {
@@ -120,7 +122,7 @@ window.hospitals = {
         },
         logo: {
           required: "Nhập logo bệnh viện",
-          maxlength: "Độ dài tối đa là 191 ký tự",
+          url: "Nhập logo dạng đường link"
         },
       },
     });
@@ -139,9 +141,10 @@ window.hospitals = {
           .add(hospitalData)
           .then((snapShot) => {
             console.log("Document written with ID: ", snapShot.id);
-
+            let index = $('tr td#index').length;
             document.querySelector("tbody").innerHTML += `
               <tr id="row-${snapShot.id}">
+                <td id="index">${++index}</td>
                 <td id="name">${hospitalData.name}</td>
                 <td id="address">${hospitalData.address}</td>
                 <td id="bed_numbers">${hospitalData.bed_numbers}</td>
