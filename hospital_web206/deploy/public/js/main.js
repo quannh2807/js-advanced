@@ -24,6 +24,9 @@ window.hospitals = {
                   <button class="btn btn-danger" onclick="hospitals.remove('${
                     result.id
                   }')"><i class="fas fa-trash"></i></button><br>
+                  <a href="patient.html?hospitalId=${
+                    result.id
+                  }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
               </td>
             </tr>
           `)
@@ -34,23 +37,42 @@ window.hospitals = {
   },
 
   remove: function (hospitalId) {
+    const database = this.db;
     Swal.fire({
-      title: "Chắc chưa?",
-      text: "Không thể khôi phục đâu!",
+      title: "Bạn có chắc chắn không?",
+      text:
+        "Xóa bệnh viện sẽ xóa tất cả thông tin bệnh nhân, dữ liệu sẽ không thể khôi phục",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      cancelButtonText: "hợp lý",
-      confirmButtonText: "méo quan tâm",
+      cancelButtonText: "Hủy bỏ",
+      confirmButtonText: "Xóa bệnh viện",
     })
       .then((result) => {
         if (result.value) {
-          this.db
-            .collection("hospitals")
+          database.collection("hospitals")
             .doc(hospitalId)
             .delete()
-            .then(() => $(`#row-${hospitalId}`).remove())
+            .then(() => {
+              $(`#row-${hospitalId}`).remove();
+
+              // delete document
+              database.collection("patients")
+                .where("hospital_id", "==", hospitalId)
+                .get()
+                .then((snapShot) =>
+                  snapShot.forEach((doc) =>
+
+                    database
+                      .collection("patients")
+                      .doc(doc.id)
+                      .delete()
+                      .then(() => console.log("Deleted"))
+                      .catch((error) => console.log(error))
+                  )
+                );
+            })
             .catch((error) => console.log(error));
         }
       })
@@ -126,6 +148,7 @@ window.hospitals = {
                 <td>
                     <button class="btn btn-info" onclick="hospitals.detail('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
                     <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button><br>
+                    <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
                 </td>
               </tr>
             `;
