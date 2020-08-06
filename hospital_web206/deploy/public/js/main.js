@@ -51,19 +51,20 @@ window.hospitals = {
     })
       .then((result) => {
         if (result.value) {
-          database.collection("hospitals")
+          database
+            .collection("hospitals")
             .doc(hospitalId)
             .delete()
             .then(() => {
               $(`#row-${hospitalId}`).remove();
 
               // delete document
-              database.collection("patients")
+              database
+                .collection("patients")
                 .where("hospital_id", "==", hospitalId)
                 .get()
                 .then((snapShot) =>
                   snapShot.forEach((doc) =>
-
                     database
                       .collection("patients")
                       .doc(doc.id)

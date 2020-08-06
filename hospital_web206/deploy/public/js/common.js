@@ -39,4 +39,28 @@ window.customFirebase = {
     // tức là 2 objects được tính lằ bằng nhau.
     return true;
   },
+
+  fetchAll: function (database, collectionName) {
+    return database.collection(collectionName).get();
+  },
+
+  fetchOne: function (database, collectionName, id) {
+    return database.collection(collectionName).doc(id).get();
+  },
+
+  findById: function (database, collectionName, param, id) {
+    return database.collection(collectionName).where(param , '==', id).get();
+  },
+
+  update: function (database, collectionName, id, data) {
+    return database.collection(collectionName).doc(id).update(data);
+  },
+
+  delete: function (database, collectionName, id) {
+    return database.collection(collectionName).delete(id);
+  },
+
+  createWithoutId: function (database, collectionName, data) {
+    return database.collection(collectionName).add(data);
+  }
 };
