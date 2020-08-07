@@ -102,7 +102,7 @@ window.hospitals = {
         },
         logo: {
           required: true,
-          url: true
+          url: true,
         },
       },
       messages: {
@@ -122,7 +122,7 @@ window.hospitals = {
         },
         logo: {
           required: "Nhập logo bệnh viện",
-          url: "Nhập logo dạng đường link"
+          url: "Nhập logo dạng đường link",
         },
       },
     });
@@ -141,18 +141,26 @@ window.hospitals = {
           .add(hospitalData)
           .then((snapShot) => {
             console.log("Document written with ID: ", snapShot.id);
-            let index = $('tr td#index').length;
+            let index = $("tr td#index").length;
             document.querySelector("tbody").innerHTML += `
               <tr id="row-${snapShot.id}">
                 <td id="index">${++index}</td>
                 <td id="name">${hospitalData.name}</td>
                 <td id="address">${hospitalData.address}</td>
                 <td id="bed_numbers">${hospitalData.bed_numbers}</td>
-                <td id="logo"><img src="${hospitalData.logo}" class="img-thumbnail" width=150 /></td>
+                <td id="logo"><img src="${
+                  hospitalData.logo
+                }" class="img-thumbnail" width=150 /></td>
                 <td>
-                    <button class="btn btn-info" onclick="hospitals.detail('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button><br>
-                    <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
+                    <button class="btn btn-info" onclick="hospitals.detail('${
+                      snapShot.id
+                    }')"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="btn btn-danger" onclick="hospitals.remove('${
+                      snapShot.id
+                    }')"><i class="fas fa-trash"></i></button><br>
+                    <a href="patient.html?hospitalId=${
+                      snapShot.id
+                    }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
                 </td>
               </tr>
             `;
