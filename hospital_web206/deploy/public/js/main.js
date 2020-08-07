@@ -12,7 +12,7 @@ window.hospitals = {
           (result) =>
             (content += `
             <tr id="row-${result.id}">
-              <td id="index">${index++}</td>
+              <th id="index">${index++}</th>
               <td id="name">${result.data().name}</td>
               <td id="address">${result.data().address}</td>
               <td id="bed_numbers">${result.data().bed_numbers}</td>
@@ -25,7 +25,7 @@ window.hospitals = {
                   }')"><i class="fas fa-pencil-alt"></i></button>
                   <button class="btn btn-danger" onclick="hospitals.remove('${
                     result.id
-                  }')"><i class="fas fa-trash"></i></button><br>
+                  }')"><i class="fas fa-trash"></i></button>
                   <a href="patient.html?hospitalId=${
                     result.id
                   }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
@@ -39,7 +39,7 @@ window.hospitals = {
   },
 
   remove: function (hospitalId) {
-    const database = this.db;
+    let database = this.db;
     Swal.fire({
       title: "Bạn có chắc chắn không?",
       text:
@@ -59,7 +59,11 @@ window.hospitals = {
             .delete()
             .then(() => {
               $(`#row-${hospitalId}`).remove();
-
+              Swal.fire(
+                "Xóa thành công!",
+                "Thông tin bệnh viện và bệnh nhân đã xóa thành công.",
+                "success"
+              );
               // delete document
               database
                 .collection("patients")
@@ -71,7 +75,9 @@ window.hospitals = {
                       .collection("patients")
                       .doc(doc.id)
                       .delete()
-                      .then(() => console.log("Deleted"))
+                      .then(() => {
+                        console.log("Deleted");
+                      })
                       .catch((error) => console.log(error))
                   )
                 );
@@ -83,85 +89,68 @@ window.hospitals = {
   },
 
   create: function () {
+    if (
+      $("#create-hospital input[name=name]").is(":empty") ||
+      $("#create-hospital input[name=address]").is(":empty") ||
+      $("#create-hospital input[name=bed_numbers]").is(":empty") ||
+      $("#create-hospital input[name=logo]").is(":empty")
+    ) {
+      $("#create-hospital").trigger("reset");
+    }
+
     $("#modal-1").modal("show");
-    $("#create-hospital").validate({
-      rules: {
-        name: {
-          required: true,
-          maxlength: 191,
-          minlength: 2,
-        },
-        address: {
-          required: true,
-          maxlength: 191,
-        },
-        bed_numbers: {
-          required: true,
-          number: true,
-          maxlength: 191,
-        },
-        logo: {
-          required: true,
-          url: true
-        },
-      },
-      messages: {
-        name: {
-          required: "Nhập tên bệnh",
-          maxlength: "Độ dài tối đa là 191 ký tự",
-          minlength: "Độ dài tối thiểu là 2 ký tự",
-        },
-        address: {
-          required: "Nhập địa chỉ bệnh",
-          maxlength: "Độ dài tối đa là 191 ký tự",
-        },
-        bed_numbers: {
-          required: "Nhập số giường bệnh",
-          number: "Chỉ nhập số",
-          maxlength: "Độ dài tối đa là 191 ký tự",
-        },
-        logo: {
-          required: "Nhập logo bệnh viện",
-          url: "Nhập logo dạng đường link"
-        },
-      },
-    });
+    this.valid();
 
     $(".save-create").click(() => {
-      if ($("#create-hospital").valid()) {
-        let hospitalData = {
-          name: $("#create-hospital input[name=name]").val(),
-          address: $("#create-hospital input[name=address]").val(),
-          bed_numbers: $("#create-hospital input[name=bed_numbers]").val(),
-          logo: $("#create-hospital input[name=logo]").val(),
-        };
-
-        this.db
-          .collection("hospitals")
-          .add(hospitalData)
-          .then((snapShot) => {
-            console.log("Document written with ID: ", snapShot.id);
-            let index = $('tr td#index').length;
-            document.querySelector("tbody").innerHTML += `
-              <tr id="row-${snapShot.id}">
-                <td id="index">${++index}</td>
-                <td id="name">${hospitalData.name}</td>
-                <td id="address">${hospitalData.address}</td>
-                <td id="bed_numbers">${hospitalData.bed_numbers}</td>
-                <td id="logo"><img src="${hospitalData.logo}" class="img-thumbnail" width=150 /></td>
-                <td>
-                    <button class="btn btn-info" onclick="hospitals.detail('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button><br>
-                    <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
-                </td>
-              </tr>
-            `;
-            $("#modal-1").modal("hide");
-          })
-          .catch((error) => console.log(error));
-      } else {
-        console.log("Not Valid");
+      if (!$("#create-hospital").valid()) {
+        return false;
       }
+
+      let hospitalData = {
+        name: $("#create-hospital input[name=name]").val(),
+        address: $("#create-hospital input[name=address]").val(),
+        bed_numbers: $("#create-hospital input[name=bed_numbers]").val(),
+        logo: $("#create-hospital input[name=logo]").val()
+          ? $("#create-hospital input[name=logo]").val()
+          : defaultImage.hospitals,
+      };
+
+      this.db
+        .collection("hospitals")
+        .add(hospitalData)
+        .then((snapShot) => {
+          console.log("Document written with ID: ", snapShot.id);
+          let index = $("tr td#index").length;
+          document.querySelector("tbody").innerHTML += `
+            <tr id="row-${snapShot.id}">
+              <th id="index">${++index}</th>
+              <td id="name">${hospitalData.name}</td>
+              <td id="address">${hospitalData.address}</td>
+              <td id="bed_numbers">${hospitalData.bed_numbers}</td>
+              <td id="logo"><img src="${
+                hospitalData.logo
+              }" class="img-thumbnail" width=150 /></td>
+              <td>
+                  <button class="btn btn-info" onclick="hospitals.detail('${
+                    snapShot.id
+                  }')"><i class="fas fa-pencil-alt"></i></button>
+                  <button class="btn btn-danger" onclick="hospitals.remove('${
+                    snapShot.id
+                  }')"><i class="fas fa-trash"></i></button>
+                  <a href="patient.html?hospitalId=${
+                    snapShot.id
+                  }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
+              </td>
+            </tr>
+          `;
+          $("#modal-1").modal("hide");
+          Swal.fire(
+            "Thêm mới thành công!",
+            "Thông tin bệnh viện đã được thêm.",
+            "success"
+          );
+        })
+        .catch((error) => console.log(error));
     });
   },
 
@@ -184,48 +173,7 @@ window.hospitals = {
         }
 
         $(".modal .modal-footer .save-update").click(() => {
-          $("#create-hospital").validate({
-            rules: {
-              name: {
-                required: true,
-                maxlength: 191,
-                minlength: 2,
-              },
-              address: {
-                required: true,
-                maxlength: 191,
-              },
-              bed_numbers: {
-                required: true,
-                number: true,
-                maxlength: 191,
-              },
-              logo: {
-                required: true,
-                maxlength: 191,
-              },
-            },
-            messages: {
-              name: {
-                required: "Nhập tên bệnh",
-                maxlength: "Độ dài tối đa là 191 ký tự",
-                minlength: "Độ dài tối thiểu là 2 ký tự",
-              },
-              address: {
-                required: "Nhập địa chỉ bệnh",
-                maxlength: "Độ dài tối đa là 191 ký tự",
-              },
-              bed_numbers: {
-                required: "Nhập số giường bệnh",
-                number: "Chỉ nhập số",
-                maxlength: "Độ dài tối đa là 191 ký tự",
-              },
-              logo: {
-                required: "Nhập logo bệnh viện",
-                maxlength: "Độ dài tối đa là 191 ký tự",
-              },
-            },
-          });
+          this.valid();
 
           if (!$("#create-hospital").valid()) {
             return false;
@@ -235,7 +183,9 @@ window.hospitals = {
             name: $(".modal .modal-body input[name=name]").val(),
             address: $(".modal .modal-body input[name=address]").val(),
             bed_numbers: $(".modal .modal-body input[name=bed_numbers]").val(),
-            logo: $(".modal .modal-body input[name=logo]").val(),
+            logo: $(".modal .modal-body input[name=logo]").val()
+              ? $(".modal .modal-body input[name=logo]").val()
+              : defaultImage.hospitals,
           };
           let oldData = {
             name: item.name,
@@ -245,8 +195,18 @@ window.hospitals = {
           };
 
           if (customFirebase.isEqual(newData, oldData)) {
-            alert("Dữ liệu bệnh viện không thay đổi");
-            $("#modal-1").modal("hide");
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Dữ liệu bệnh viện không được thay đổi!",
+            }).then((result) => {
+              if (result.value) {
+                setTimeout(() => {
+                  $("#modal-1").modal("hide");
+                }, 150);
+              }
+            });
+
             return false;
           }
 
@@ -259,11 +219,61 @@ window.hospitals = {
               $(`#row-${hospitalId} td#bed_numbers`).text(newData.bed_numbers);
               $(`#row-${hospitalId} td#logo img`).attr("src", newData.logo);
 
+              Swal.fire(
+                "Sửa thành công!",
+                "Thông tin bệnh viện đã được sửa.",
+                "success"
+              );
               return $("#modal-1").modal("hide");
             })
             .catch((error) => console.log(error));
         });
       })
       .catch((error) => console.log(error));
+  },
+
+  valid: function () {
+    $("#create-hospital").validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 191,
+          minlength: 2,
+        },
+        address: {
+          required: true,
+          maxlength: 191,
+        },
+        bed_numbers: {
+          required: true,
+          number: true,
+          maxlength: 191,
+        },
+        logo: {
+          required: true,
+          maxlength: 191,
+        },
+      },
+      messages: {
+        name: {
+          required: "Nhập tên bệnh",
+          maxlength: "Độ dài tối đa là 191 ký tự",
+          minlength: "Độ dài tối thiểu là 2 ký tự",
+        },
+        address: {
+          required: "Nhập địa chỉ bệnh",
+          maxlength: "Độ dài tối đa là 191 ký tự",
+        },
+        bed_numbers: {
+          required: "Nhập số giường bệnh",
+          number: "Chỉ nhập số",
+          maxlength: "Độ dài tối đa là 191 ký tự",
+        },
+        logo: {
+          required: "Nhập logo bệnh viện",
+          maxlength: "Độ dài tối đa là 191 ký tự",
+        },
+      },
+    });
   },
 };

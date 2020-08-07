@@ -65,7 +65,7 @@ window.customFirebase = {
   },
 };
 
-const defaultImage = [
-  "https://i.ibb.co/GvV9F8G/IMAG0450.jpg",
-  "https://i.ibb.co/vLSQ5kR/IMAG0464.jpg"
-];
+const defaultImage = {
+  hospitals: "https://image.shutterstock.com/image-vector/hospital-logo-icon-260nw-1179070375.jpg",
+  patients: "https://www.alliancerehabmed.com/wp-content/uploads/icon-avatar-default.png"
+};
