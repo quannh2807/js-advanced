@@ -29,17 +29,6 @@ window.hospitals = {
               </td>
             </tr>
           `;
-
-          // this.db
-          // .collection("patients")
-          // .where("hospital_id", "==", result.id)
-          // .get()
-          // .then((docRef) => {
-          //   // console.log(`index: ${index++}, documents: ${docRef.size}`);
-          //   // return docRef.size;
-
-          //   $(`row-${result.id} tr#numOfPatient`).text(docRef.size);
-          // });
         });
         $("tbody").html(content);
       })
@@ -113,8 +102,6 @@ window.hospitals = {
           ? $("#create-hospital input[name=logo]").val()
           : defaultImage.hospitals,
       };
-      console.log(hospitalData);
-      debugger;
 
       this.db
         .collection("hospitals")
@@ -173,7 +160,9 @@ window.hospitals = {
           let newData = {
             name: $("#modal-2 .modal-body input[name=name]").val(),
             address: $("#modal-2 .modal-body input[name=address]").val(),
-            bed_numbers: $("#modal-2 .modal-body input[name=bed_numbers]").val(),
+            bed_numbers: $(
+              "#modal-2 .modal-body input[name=bed_numbers]"
+            ).val(),
             logo: $("#modal-2 .modal-body input[name=logo]").val()
               ? $("#modal-2 .modal-body input[name=logo]").val()
               : defaultImage.hospitals,
@@ -191,33 +180,30 @@ window.hospitals = {
               title: "Oops...",
               text: "Dữ liệu bệnh viện không được thay đổi!",
             }).then((result) => {
-              if (result.value) {
-                setTimeout(() => {
-                  $("#modal-1").modal("hide");
-                }, 150);
-              }
+              return false;
             });
-
             return false;
+          } else {
+            this.db
+              .doc(`hospitals/${hospitalId}`)
+              .update(newData)
+              .then(() => {
+                $(`#row-${hospitalId} td#name`).text(newData.name);
+                $(`#row-${hospitalId} td#address`).text(newData.address);
+                $(`#row-${hospitalId} td#bed_numbers`).text(
+                  newData.bed_numbers
+                );
+                $(`#row-${hospitalId} td#logo img`).attr("src", newData.logo);
+
+                Swal.fire(
+                  "Sửa thành công!",
+                  "Thông tin bệnh viện đã được sửa.",
+                  "success"
+                );
+                return $("#modal-2").modal("hide");
+              })
+              .catch((error) => console.log(error));
           }
-
-          this.db
-            .doc(`hospitals/${hospitalId}`)
-            .update(newData)
-            .then(() => {
-              $(`#row-${hospitalId} td#name`).text(newData.name);
-              $(`#row-${hospitalId} td#address`).text(newData.address);
-              $(`#row-${hospitalId} td#bed_numbers`).text(newData.bed_numbers);
-              $(`#row-${hospitalId} td#logo img`).attr("src", newData.logo);
-
-              Swal.fire(
-                "Sửa thành công!",
-                "Thông tin bệnh viện đã được sửa.",
-                "success"
-              );
-              return $("#modal-2").modal("hide");
-            })
-            .catch((error) => console.log(error));
         });
       })
       .catch((error) => console.log(error));
@@ -239,7 +225,7 @@ window.hospitals = {
           required: true,
           number: true,
           min: 1,
-          max: 2000,
+          max: 5000,
         },
         logo: {
           required: true,

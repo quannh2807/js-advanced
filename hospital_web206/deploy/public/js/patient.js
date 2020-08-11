@@ -1,18 +1,3 @@
-const urlParams = new URLSearchParams(window.location.search);
-const hospitalId = urlParams.get("hospitalId");
-
-if (!hospitalId || hospitalId.length == 0 || hospitalId == "") {
-  // redirect to index.html
-  Swal.fire({
-    icon: "error",
-    title: "Oops...",
-    html:
-      'Có gì đó đang xảy ra!<p class="text-warning">Tự động quay trở lại trang chủ</p>',
-  }).then((result) => {
-    window.location.replace("index.html");
-  });
-}
-
 window.patients = {
   db: customFirebase.getConnect(),
 
@@ -35,7 +20,7 @@ window.patients = {
                       <td id="avatar">
                         <img src="${
                           doc.data().avatar
-                        }" class="img-thumbnail" width=200 />
+                        }" class="img-thumbnail" width=100 />
                       </td>
                       <td>
                         <button class="btn btn-info" onclick="patients.updatePatient('${
@@ -140,10 +125,8 @@ window.patients = {
   },
 
   updatePatient: function (patientId) {
-
     // get all patients data
     customFirebase.fetchOne(this.db, "patients", patientId).then((doc) => {
-
       $("#modal-2 .modal-body input[name=name]").val(doc.data().name);
       $("#modal-2 .modal-body input[name=age]").val(doc.data().age);
       $("#modal-2 .modal-body input[name=address]").val(doc.data().address);
@@ -169,7 +152,6 @@ window.patients = {
             : defaultImage.patients,
           hospital_id: $("#modal-2 .modal-body select[name=hospitalId]").val(),
         };
-
         let oldPatient = {
           name: doc.data().name,
           age: doc.data().age,
@@ -181,7 +163,7 @@ window.patients = {
 
         if (customFirebase.isEqual(newPatient, oldPatient)) {
           Swal.fire("Dữ liệu bệnh nhân không được thay đổi").then(() => {
-            $("#modal-2").modal("hide");
+            return false;
           });
           return false;
         } else {
