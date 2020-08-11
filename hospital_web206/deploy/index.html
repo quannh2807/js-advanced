@@ -90,8 +90,8 @@
         </div>
       </div>
     </div>
-     <!-- Bootstrap Update Modal -->
-     <div class="modal" id="modal-2" tabindex="-1">
+    <!-- Bootstrap Update Modal -->
+    <div class="modal" id="modal-2" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -153,7 +153,13 @@
   <script src="./public/js/hospitals.js"></script>
 
   <script>
-    $(document).ready(() => hospitals.fetchAll());
+    $(document).ready(() => {
+      hospitals.fetchAll();
+      $("#modal-1").on("hidden.bs.modal", function (e) {
+        $("#create-hospital").data("validator").resetForm();
+        $("#create-hospital").trigger("reset");
+      });
+    });
   </script>
 </body>
 

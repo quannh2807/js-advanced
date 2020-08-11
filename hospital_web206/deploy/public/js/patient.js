@@ -109,10 +109,6 @@ window.patients = {
           });
         });
     });
-
-    $('#modal-1').on('hidden.bs.modal', function (e) {
-      $("#create-patient").data('validator').resetForm()
-    });
   },
 
   deletePatient: function (patientId) {
@@ -144,19 +140,10 @@ window.patients = {
   },
 
   updatePatient: function (patientId) {
-    // kiểm tra form có trống không
-    if (
-      $("#update-patient input[name=name]").is(":empty") ||
-      $("#update-patient input[name=age]").is(":empty") ||
-      $("#update-patient input[name=address]").is(":empty") ||
-      $("#update-patient input[name=bed_no]").is(":empty") ||
-      $("#update-patient input[name=avatar]").is(":empty")
-    ) {
-      $("#create-patient").trigger("reset");
-    }
 
     // get all patients data
     customFirebase.fetchOne(this.db, "patients", patientId).then((doc) => {
+
       $("#modal-2 .modal-body input[name=name]").val(doc.data().name);
       $("#modal-2 .modal-body input[name=age]").val(doc.data().age);
       $("#modal-2 .modal-body input[name=address]").val(doc.data().address);

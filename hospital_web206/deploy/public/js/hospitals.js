@@ -97,15 +97,6 @@ window.hospitals = {
   },
 
   create: function () {
-    if (
-      $("#create-hospital input[name=name]").is(":empty") ||
-      $("#create-hospital input[name=address]").is(":empty") ||
-      $("#create-hospital input[name=bed_numbers]").is(":empty") ||
-      $("#create-hospital input[name=logo]").is(":empty")
-    ) {
-      $("#create-hospital").trigger("reset");
-    }
-
     $("#modal-1").modal("show");
     this.create_valid();
 
@@ -151,11 +142,6 @@ window.hospitals = {
           );
         })
         .catch((error) => console.log(error));
-    });
-
-    $("#modal-1").on("hidden.bs.modal", function (e) {
-      console.log(e);
-      $("#create-hospital").data("validator").resetForm();
     });
   },
 

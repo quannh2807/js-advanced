@@ -87,7 +87,6 @@
               <label for="avatar">Ảnh bệnh nhân<span class="badge badge-danger mx-1">link</span></label>
               <input type="text" name="avatar" class="form-control">
             </div>
-
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary save-create">Save create</button>
@@ -133,7 +132,6 @@
               <label for="avatar">Ảnh bệnh nhân<span class="badge badge-danger mx-1">link</span></label>
               <input type="text" name="avatar" class="form-control">
             </div>
-
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary save-update">Save update</button>
@@ -168,13 +166,14 @@
   <script>
     $(document).ready(() => {
       patients.getPatients();
+      // lay ra ten benh vien
       customFirebase
         .fetchOne(patients.db, "hospitals", hospitalId)
         .then((docRef) =>
           $(".title-table").text(`Danh sách bệnh nhân ${docRef.data().name}`)
         );
     });
-
+    // lay ra dsach benh vien -> truyen vao form
     customFirebase
       .fetchAll(patients.db, "hospitals")
       .then((docRef) => {
@@ -186,6 +185,11 @@
               `);
         });
       });
+    // clear data, error khi dong modal
+    $('#modal-1').on('hidden.bs.modal', function (e) {
+      $("#create-patient").data('validator').resetForm();
+      $("#create-patient").trigger("reset");
+    });
   </script>
 </body>
 
