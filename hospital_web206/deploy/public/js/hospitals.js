@@ -7,12 +7,9 @@ window.hospitals = {
       .get()
       .then((snapShot) => {
         let content = ``;
-        let index = 1;
-        snapShot.forEach(
-          (result) =>
-            (content += `
+        snapShot.forEach((result) => {
+          content += `
             <tr id="row-${result.id}">
-              <th id="index">${index++}</th>
               <td id="name">${result.data().name}</td>
               <td id="address">${result.data().address}</td>
               <td id="bed_numbers">${result.data().bed_numbers}</td>
@@ -31,8 +28,19 @@ window.hospitals = {
                   }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
               </td>
             </tr>
-          `)
-        );
+          `;
+
+          // this.db
+          // .collection("patients")
+          // .where("hospital_id", "==", result.id)
+          // .get()
+          // .then((docRef) => {
+          //   // console.log(`index: ${index++}, documents: ${docRef.size}`);
+          //   // return docRef.size;
+
+          //   $(`row-${result.id} tr#numOfPatient`).text(docRef.size);
+          // });
+        });
         $("tbody").html(content);
       })
       .catch((error) => console.log(error));
@@ -99,7 +107,7 @@ window.hospitals = {
     }
 
     $("#modal-1").modal("show");
-    this.valid();
+    this.create_valid();
 
     $(".save-create").click(() => {
       if (!$("#create-hospital").valid()) {
@@ -114,32 +122,24 @@ window.hospitals = {
           ? $("#create-hospital input[name=logo]").val()
           : defaultImage.hospitals,
       };
+      console.log(hospitalData);
+      debugger;
 
       this.db
         .collection("hospitals")
         .add(hospitalData)
         .then((snapShot) => {
           console.log("Document written with ID: ", snapShot.id);
-          let index = $("tr td#index").length;
           document.querySelector("tbody").innerHTML += `
             <tr id="row-${snapShot.id}">
-              <th id="index">${++index}</th>
               <td id="name">${hospitalData.name}</td>
               <td id="address">${hospitalData.address}</td>
               <td id="bed_numbers">${hospitalData.bed_numbers}</td>
-              <td id="logo"><img src="${
-                hospitalData.logo
-              }" class="img-thumbnail" width=150 /></td>
+              <td id="logo"><img src="${hospitalData.logo}" class="img-thumbnail" width=150 /></td>
               <td>
-                  <button class="btn btn-info" onclick="hospitals.detail('${
-                    snapShot.id
-                  }')"><i class="fas fa-pencil-alt"></i></button>
-                  <button class="btn btn-danger" onclick="hospitals.remove('${
-                    snapShot.id
-                  }')"><i class="fas fa-trash"></i></button>
-                  <a href="patient.html?hospitalId=${
-                    snapShot.id
-                  }" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
+                  <button class="btn btn-info" onclick="hospitals.detail('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
+                  <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button>
+                  <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
               </td>
             </tr>
           `;
@@ -152,6 +152,11 @@ window.hospitals = {
         })
         .catch((error) => console.log(error));
     });
+
+    $("#modal-1").on("hidden.bs.modal", function (e) {
+      console.log(e);
+      $("#create-hospital").data("validator").resetForm();
+    });
   },
 
   update: function (hospitalId) {
@@ -161,30 +166,30 @@ window.hospitals = {
       .get()
       .then((result) => {
         let item = result.data();
-        $(".modal .modal-header h5").text("Update Hospital");
-        $(".modal .modal-body input[name=name]").val(item.name);
-        $(".modal .modal-body input[name=address]").val(item.address);
-        $(".modal .modal-body input[name=logo]").val(item.logo);
-        $(".modal .modal-body input[name=bed_numbers]").val(item.bed_numbers);
-        $(".modal .modal-footer .save-update").text("Save Update");
+        $("#modal-2 .modal-header h5").text("Update Hospital");
+        $("#modal-2 .modal-body input[name=name]").val(item.name);
+        $("#modal-2 .modal-body input[name=address]").val(item.address);
+        $("#modal-2 .modal-body input[name=logo]").val(item.logo);
+        $("#modal-2 .modal-body input[name=bed_numbers]").val(item.bed_numbers);
+        $("#modal-2 .modal-footer .save-update").text("Save Update");
 
         if (result) {
-          $("#modal-1").modal("show");
+          $("#modal-2").modal("show");
         }
 
-        $(".modal .modal-footer .save-update").click(() => {
-          this.valid();
+        $("#modal-2 .modal-footer .save-update").click(() => {
+          this.update_valid();
 
-          if (!$("#create-hospital").valid()) {
+          if (!$("#update-hospital").valid()) {
             return false;
           }
 
           let newData = {
-            name: $(".modal .modal-body input[name=name]").val(),
-            address: $(".modal .modal-body input[name=address]").val(),
-            bed_numbers: $(".modal .modal-body input[name=bed_numbers]").val(),
-            logo: $(".modal .modal-body input[name=logo]").val()
-              ? $(".modal .modal-body input[name=logo]").val()
+            name: $("#modal-2 .modal-body input[name=name]").val(),
+            address: $("#modal-2 .modal-body input[name=address]").val(),
+            bed_numbers: $("#modal-2 .modal-body input[name=bed_numbers]").val(),
+            logo: $("#modal-2 .modal-body input[name=logo]").val()
+              ? $("#modal-2 .modal-body input[name=logo]").val()
               : defaultImage.hospitals,
           };
           let oldData = {
@@ -224,7 +229,7 @@ window.hospitals = {
                 "Thông tin bệnh viện đã được sửa.",
                 "success"
               );
-              return $("#modal-1").modal("hide");
+              return $("#modal-2").modal("hide");
             })
             .catch((error) => console.log(error));
         });
@@ -232,7 +237,7 @@ window.hospitals = {
       .catch((error) => console.log(error));
   },
 
-  valid: function () {
+  create_valid: function () {
     $("#create-hospital").validate({
       rules: {
         name: {
@@ -247,11 +252,12 @@ window.hospitals = {
         bed_numbers: {
           required: true,
           number: true,
-          maxlength: 191,
+          min: 1,
+          max: 2000,
         },
         logo: {
           required: true,
-          maxlength: 191,
+          url: true,
         },
       },
       messages: {
@@ -267,11 +273,57 @@ window.hospitals = {
         bed_numbers: {
           required: "Nhập số giường bệnh",
           number: "Chỉ nhập số",
-          maxlength: "Độ dài tối đa là 191 ký tự",
+          min: "Số giường không thể nhỏ hơn 1",
         },
         logo: {
           required: "Nhập logo bệnh viện",
+          url: "Chỉ cho phép nhập logo theo link",
+        },
+      },
+    });
+  },
+
+  update_valid: function () {
+    $("#update-hospital").validate({
+      rules: {
+        name: {
+          required: true,
+          maxlength: 191,
+          minlength: 2,
+        },
+        address: {
+          required: true,
+          maxlength: 191,
+        },
+        bed_numbers: {
+          required: true,
+          number: true,
+          min: 1,
+          max: 2000,
+        },
+        logo: {
+          required: true,
+          url: true,
+        },
+      },
+      messages: {
+        name: {
+          required: "Nhập tên bệnh",
           maxlength: "Độ dài tối đa là 191 ký tự",
+          minlength: "Độ dài tối thiểu là 2 ký tự",
+        },
+        address: {
+          required: "Nhập địa chỉ bệnh",
+          maxlength: "Độ dài tối đa là 191 ký tự",
+        },
+        bed_numbers: {
+          required: "Nhập số giường bệnh",
+          number: "Chỉ nhập số",
+          min: "Số giường không thể nhỏ hơn 1",
+        },
+        logo: {
+          required: "Nhập logo bệnh viện",
+          url: "Chỉ cho phép nhập logo theo link",
         },
       },
     });
