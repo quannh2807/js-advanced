@@ -1,3 +1,18 @@
+const urlParams = new URLSearchParams(window.location.search);
+const hospitalId = urlParams.get("hospitalId");
+
+if (!hospitalId || hospitalId.length == 0 || hospitalId == "") {
+  // redirect to index.html
+  Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    html:
+      'Có gì đó đang xảy ra!<p class="text-warning">Tự động quay trở lại trang chủ</p>',
+  }).then((result) => {
+    window.location.replace("index.html");
+  });
+}
+
 window.patients = {
   db: customFirebase.getConnect(),
 
@@ -11,10 +26,8 @@ window.patients = {
 
     patientData.then((querySnapShot) => {
       let content = ``;
-      let index = 1;
       querySnapShot.forEach((doc) => {
         content += `<tr id="row-${doc.id}">
-                      <td id="index">${index++}</td>
                       <td id="name">${doc.data().name}</td>
                       <td id="age">${doc.data().age}</td>
                       <td id="bed_no">${doc.data().bed_no}</td>
@@ -48,7 +61,6 @@ window.patients = {
     ) {
       $("#create-patient").trigger("reset");
     }
-
     $("#modal-1").modal("show");
 
     this.valid();
@@ -63,47 +75,43 @@ window.patients = {
         age: $("#create-patient input[name=age]").val(),
         address: $("#create-patient input[name=address]").val(),
         bed_no: $("#create-patient input[name=bed_no]").val(),
-        hospital_id: hospitalId,
+        hospital_id: $("#create-patient select[name=hospitalId]").val(),
         avatar: $("#create-patient input[name=avatar]").val()
-          ? $("#create-patient input[name=bed_no]").val()
+          ? $("#create-patient input[name=avatar]").val()
           : defaultImage.patients,
       };
 
       customFirebase
         .createWithoutId(this.db, "patients", patientData)
         .then((snapShot) => {
-          console.log("Document written with ID: ", snapShot.id, snapShot);
-          let index = $("tr td#index").length;
           // add row
           document.querySelector("tbody").innerHTML += `
             <tr id="row-${snapShot.id}">
-              <td id="index">${++index}</td>
               <td id="name">${patientData.name}</td>
               <td id="age">${patientData.age}</td>
               <td id="bed_no">${patientData.bed_no}</td>
               <td id="address">${patientData.address}</td>
               <td id="avatar">
-                <img src="${
-                  patientData.avatar
-                }" class="img-thumbnail" width=200 />
+                <img src="${patientData.avatar}" class="img-thumbnail" width=200 />
               </td>
               <td>
-                <button class="btn btn-info" onclick="patients.updatePatient('${
-                  snapShot.id
-                }')"><i class="fas fa-pencil-alt"></i></button>
-                <button class="btn btn-danger" onclick="patients.deletePatient('${
-                  snapShot.id
-                }')"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-info" onclick="patients.updatePatient('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn btn-danger" onclick="patients.deletePatient('${snapShot.id}')"><i class="fas fa-trash"></i></button>
               </td>
             </tr>`;
 
-          $("#modal-1").modal("hide");
           Swal.fire(
             "Thêm mới thành công!",
             "Thông tin bệnh nhân đã được thêm mới.",
             "success"
-          );
+          ).then(() => {
+            $("#modal-1").modal("hide");
+          });
         });
+    });
+
+    $('#modal-1').on('hidden.bs.modal', function (e) {
+      $("#create-patient").data('validator').resetForm()
     });
   },
 
@@ -136,23 +144,29 @@ window.patients = {
   },
 
   updatePatient: function (patientId) {
-    /**
-     * 1. Get Patient by patientId
-     * 2. Validate: equal, form ...
-     * 3. Save
-     */
+    // kiểm tra form có trống không
+    if (
+      $("#create-patient input[name=name]").is(":empty") ||
+      $("#create-patient input[name=age]").is(":empty") ||
+      $("#create-patient input[name=address]").is(":empty") ||
+      $("#create-patient input[name=bed_no]").is(":empty") ||
+      $("#create-patient input[name=avatar]").is(":empty")
+    ) {
+      $("#create-patient").trigger("reset");
+    }
+
+    // get all patients data
     customFirebase.fetchOne(this.db, "patients", patientId).then((doc) => {
-      $(".modal .modal-header h5").text("Update Patient");
       $(".modal .modal-body input[name=name]").val(doc.data().name);
       $(".modal .modal-body input[name=age]").val(doc.data().age);
       $(".modal .modal-body input[name=address]").val(doc.data().address);
       $(".modal .modal-body input[name=bed_no]").val(doc.data().bed_no);
       $(".modal .modal-body input[name=avatar]").val(doc.data().avatar);
+
+      $(".modal .modal-header h5").text("Update Patient");
       $(".modal .modal-footer .save-update").text("Save Update");
 
-      if (doc) {
-        $("#modal-1").modal("show");
-      }
+      $("#modal-1").modal("show");
 
       $(".modal .modal-footer .save-update").click(() => {
         this.valid();
@@ -169,6 +183,7 @@ window.patients = {
           avatar: $(".modal .modal-body input[name=avatar]").val()
             ? $(".modal .modal-body input[name=avatar]").val()
             : defaultImage.patients,
+          hospital_id: $(".modal .modal-body select[name=hospitalId]").val(),
         };
 
         let oldPatient = {
@@ -177,31 +192,49 @@ window.patients = {
           address: doc.data().address,
           bed_no: doc.data().bed_no,
           avatar: doc.data().avatar,
+          hospital_id: doc.data().hospital_id,
         };
 
         if (customFirebase.isEqual(newPatient, oldPatient)) {
-          alert("Dữ liệu bệnh nhân không thay đổi");
-          $("#modal-1").modal("hide");
-          return false;
-        }
-
-        customFirebase
-          .update(this.db, "patients", patientId, newPatient)
-          .then(() => {
-            $(`#row-${patientId} td#name`).text(newPatient.name);
-            $(`#row-${patientId} td#age`).text(newPatient.age);
-            $(`#row-${patientId} td#bed_no`).text(newPatient.bed_no);
-            $(`#row-${patientId} td#address`).text(newPatient.address);
-            $(`#row-${patientId} td#avatar img`).attr("src", newPatient.avatar);
-
+          Swal.fire("Dữ liệu bệnh nhân không được thay đổi").then(() => {
             $("#modal-1").modal("hide");
-            Swal.fire(
-              "Sửa thành công!",
-              "Thông tin bệnh nhân đã được sửa.",
-              "success"
-            );
-          })
-          .catch((error) => console.log(error));
+          });
+          return false;
+        } else {
+          customFirebase
+            .update(this.db, "patients", patientId, newPatient)
+            .then(() => {
+              if (newPatient.hospital_id !== oldPatient.hospital_id) {
+                // xoa row tren ui
+                Swal.fire(
+                  "Sửa thành công!",
+                  "Thông tin bệnh nhân đã được sửa.",
+                  "success"
+                ).then(() => {
+                  $(`#row-${patientId}`).remove();
+                  $("#modal-1").modal("hide");
+                });
+              } else {
+                $(`#row-${patientId} td#name`).text(newPatient.name);
+                $(`#row-${patientId} td#age`).text(newPatient.age);
+                $(`#row-${patientId} td#bed_no`).text(newPatient.bed_no);
+                $(`#row-${patientId} td#address`).text(newPatient.address);
+                $(`#row-${patientId} td#avatar img`).attr(
+                  "src",
+                  newPatient.avatar
+                );
+
+                Swal.fire(
+                  "Sửa thành công!",
+                  "Thông tin bệnh nhân đã được sửa.",
+                  "success"
+                ).then(() => {
+                  $("#modal-1").modal("hide");
+                });
+              }
+            })
+            .catch((error) => console.log(error));
+        }
       });
     });
   },
@@ -234,6 +267,9 @@ window.patients = {
           required: false,
           url: true,
         },
+        hospitalId: {
+          required: true,
+        },
       },
       messages: {
         name: {
@@ -259,6 +295,9 @@ window.patients = {
         },
         avatar: {
           url: "Avatar có định dạng là link",
+        },
+        hospitalId: {
+          required: "Chọn bệnh viện của bệnh nhân",
         },
       },
     });

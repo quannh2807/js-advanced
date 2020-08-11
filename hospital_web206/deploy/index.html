@@ -5,8 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hospitals</title>
+  <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
+  <!-- Bootstap 4 CSS CDN -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <!-- font-awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+  <!-- Custom css -->
   <link rel="stylesheet" href="./public/css/main.css">
 </head>
 
@@ -35,11 +39,10 @@
     <table class="table table-hover table-bordered">
       <thead>
         <tr>
-          <th scrope="col">No</th>
-          <th scrope="col">Hospital name</th>
-          <th scrope="col">Hospital address</th>
-          <th scrope="col">Bed numbers</th>
-          <th scrope="col">Hospital logo</th>
+          <th scrope="col">Tên bệnh viện</th>
+          <th scrope="col">Địa chỉ</th>
+          <th scrope="col">Số giường</th>
+          <th scrope="col">Logo bệnh viện</th>
           <th scrope="col">
             <button class="btn btn-outline-primary btn-create-hotel" onclick="hospitals.create()">Create</button>
           </th>
@@ -62,19 +65,19 @@
           <div class="modal-body">
             <form id="create-hospital">
               <div class="form group">
-                <label for="name">Hospital name</label>
+                <label for="name">Hospital name<span class="text-danger">*</span></label>
                 <input type="text" name="name" class="form-control">
               </div>
               <div class="form group">
-                <label for="address">Hospital address</label>
+                <label for="address">Hospital address<span class="text-danger">*</span></label>
                 <input type="text" name="address" class="form-control">
               </div>
               <div class="form group">
-                <label for="bed_numbers">Hospital bed numbers</label>
+                <label for="bed_numbers">Hospital bed numbers<span class="text-danger">*</span></label>
                 <input type="text" name="bed_numbers" class="form-control">
               </div>
               <div class="form group">
-                <label for="logo">Hospital logo</label>
+                <label for="logo">Hospital logo<span class="text-danger">*</span></label>
                 <input type="text" name="logo" class="form-control">
               </div>
 
@@ -109,7 +112,7 @@
 
   <!-- My custom js -->
   <script src="./public/js/common.js"></script>
-  <script src="./public/js/main.js"></script>
+  <script src="./public/js/hospitals.js"></script>
 
   <script>
     $(document).ready(() => hospitals.fetchAll());

@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hospitals</title>
+  <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
   <link rel="stylesheet" href="./public/css/main.css">
@@ -31,16 +32,15 @@
   </header>
 
   <div class="container-fluid">
-    <h3 class="h4 my-3">Danh sách bệnh nhân</h3>
-    <table class="table table-striped">
+    <h3 class="h4 my-3 title-table"></h3>
+    <table class="table table-hover table-bordered">
       <thead>
         <tr>
-          <th scrope="col">No.</th>
-          <th scrope="col">Patient name</th>
-          <th scrope="col">Patient address</th>
-          <th scrope="col">Bed number</th>
-          <th scrope="col">Patient logo</th>
-          <th scrope="col">Patient avatar</th>
+          <th scrope="col">Tên bệnh nhân</th>
+          <th scrope="col">Địa chỉ</th>
+          <th scrope="col">Số giường nằm</th>
+          <th scrope="col">Địa chỉ</th>
+          <th scrope="col">Hình ảnh bệnh nhân</th>
           <th scrope="col">
             <button class="btn btn-outline-primary btn-create-hotel" onclick="patients.createPatient()">Create</button>
           </th>
@@ -63,29 +63,29 @@
         </div>
         <div class="modal-body">
           <form id="create-patient">
+            <div class="form-group">
+              <label for="hospitalId">Bệnh viện<span class="text-danger">*</span></label>
+              <select name="hospitalId" id="hospitalId" class="form-control"></select>
+            </div>
             <div class="form group">
-              <label for="name">Patient name</label>
+              <label for="name">Tên bệnh nhân<span class="text-danger">*</span></label>
               <input type="text" name="name" class="form-control">
             </div>
             <div class="form group">
-              <label for="age">Patient age</label>
+              <label for="age">Tuổi bệnh nhân<span class="text-danger">*</span></label>
               <input type="text" name="age" class="form-control">
             </div>
             <div class="form group">
-              <label for="address">Patient address</label>
+              <label for="address">Địa chỉ bệnh nhân<span class="text-danger">*</span></label>
               <input type="text" name="address" class="form-control">
             </div>
             <div class="form group">
-              <label for="bed_no">Patient bed no</label>
+              <label for="bed_no">Giường bệnh số<span class="text-danger">*</span></label>
               <input type="text" name="bed_no" class="form-control">
             </div>
             <div class="form group">
-              <label for="avatar">Patient avatar <span class="badge badge-danger">link</span></label>
+              <label for="avatar">Ảnh bệnh nhân<span class="badge badge-danger mx-1">link</span></label>
               <input type="text" name="avatar" class="form-control">
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <input type="text" class="form-control">
             </div>
 
             <div class="modal-footer">
@@ -117,14 +117,29 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
   <!-- My custom js -->
-  <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const hospitalId = urlParams.get('hospitalId');
-  </script>
   <script src="./public/js/common.js"></script>
   <script src="./public/js/patient.js"></script>
   <script>
-    $(document).ready(() => patients.getPatients());
+    $(document).ready(() => {
+      patients.getPatients();
+      customFirebase
+        .fetchOne(patients.db, "hospitals", hospitalId)
+        .then((docRef) =>
+          $(".title-table").text(`Danh sách bệnh nhân ${docRef.data().name}`)
+        );
+    });
+
+    customFirebase
+      .fetchAll(patients.db, "hospitals")
+      .then((docRef) => {
+        docRef.forEach((snap) => {
+          $(".modal .modal-body select#hospitalId").append(`
+                <option value="${snap.id}"
+                ${hospitalId == snap.id ? "selected" : ""}
+                >${snap.data().name}</option>
+              `);
+        });
+      });
   </script>
 </body>
 
