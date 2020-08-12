@@ -59,7 +59,7 @@ window.patients = {
         name: $("#create-patient input[name=name]").val(),
         age: $("#create-patient input[name=age]").val(),
         address: $("#create-patient input[name=address]").val(),
-        bed_no: $("#create-patient input[name=bed_no]").val(),
+        bed_no: parseInt($("#create-patient input[name=bed_no]").val()),
         hospital_id: $("#create-patient select[name=hospitalId]").val(),
         avatar: $("#create-patient input[name=avatar]").val()
           ? $("#create-patient input[name=avatar]").val()
@@ -217,7 +217,7 @@ window.patients = {
           required: true,
           number: true,
           min: 1,
-          max: 100,
+          max: 110,
         },
         address: {
           required: true,
@@ -227,11 +227,12 @@ window.patients = {
           required: true,
           number: true,
           min: 0,
-          max: 999,
+          max: 2000,
         },
         avatar: {
           required: false,
           url: true,
+          extension: "jpg|png|gif",
         },
         hospitalId: {
           required: true,
@@ -246,8 +247,8 @@ window.patients = {
         age: {
           required: "Nhập tuổi bệnh nhân",
           number: "Tuổi bệnh nhân phải là số",
-          min: "Tuổi của bệnh nhân phải lớn hơn 0",
-          max: "Tuổi của bệnh nhân phải nhỏ hơn 100",
+          min: "Tuổi của bệnh nhân phải lớn hơn hoặc bằng 0",
+          max: "Tuổi của bệnh nhân phải nhỏ hơn 110",
         },
         address: {
           required: "Nhập địa chỉ bệnh",
@@ -257,10 +258,11 @@ window.patients = {
           required: "Số giường bệnh phải được nhập",
           number: "Số giường bệnh phải là số",
           min: "Số giường bệnh tối thiểu là 1",
-          max: "Số giường bệnh tối đa là 999",
+          max: "Số giường bệnh tối đa là 2000",
         },
         avatar: {
           url: "Avatar có định dạng là link",
+          extension: "Định dạng logo chưa hợp lệ"
         },
         hospitalId: {
           required: "Chọn bệnh viện của bệnh nhân",
@@ -280,8 +282,8 @@ window.patients = {
         age: {
           required: true,
           number: true,
-          min: 1,
-          max: 100,
+          min: 0,
+          max: 110,
         },
         address: {
           required: true,
@@ -291,7 +293,7 @@ window.patients = {
           required: true,
           number: true,
           min: 0,
-          max: 999,
+          max: 2000,
         },
         avatar: {
           required: false,
@@ -310,8 +312,8 @@ window.patients = {
         age: {
           required: "Nhập tuổi bệnh nhân",
           number: "Tuổi bệnh nhân phải là số",
-          min: "Tuổi của bệnh nhân phải lớn hơn 0",
-          max: "Tuổi của bệnh nhân phải nhỏ hơn 100",
+          min: "Tuổi của bệnh nhân phải lớn hơn hoặc bằng 0",
+          max: "Tuổi của bệnh nhân phải nhỏ hơn 110",
         },
         address: {
           required: "Nhập địa chỉ bệnh",
@@ -321,7 +323,7 @@ window.patients = {
           required: "Số giường bệnh phải được nhập",
           number: "Số giường bệnh phải là số",
           min: "Số giường bệnh tối thiểu là 1",
-          max: "Số giường bệnh tối đa là 999",
+          max: "Số giường bệnh tối đa là 2000",
         },
         avatar: {
           url: "Avatar có định dạng là link",
