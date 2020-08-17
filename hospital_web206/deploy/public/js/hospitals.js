@@ -97,7 +97,9 @@ window.hospitals = {
       let hospitalData = {
         name: $("#create-hospital input[name=name]").val(),
         address: $("#create-hospital input[name=address]").val(),
-        bed_numbers: parseInt($("#create-hospital input[name=bed_numbers]").val()),
+        bed_numbers: parseInt(
+          $("#create-hospital input[name=bed_numbers]").val()
+        ),
         logo: $("#create-hospital input[name=logo]").val()
           ? $("#create-hospital input[name=logo]").val()
           : defaultImage.hospitals,
@@ -108,25 +110,27 @@ window.hospitals = {
         .add(hospitalData)
         .then((snapShot) => {
           console.log("Document written with ID: ", snapShot.id);
-          document.querySelector("tbody").innerHTML += `
-            <tr id="row-${snapShot.id}">
-              <td id="name">${hospitalData.name}</td>
-              <td id="address">${hospitalData.address}</td>
-              <td id="bed_numbers">${hospitalData.bed_numbers}</td>
-              <td id="logo"><img src="${hospitalData.logo}" class="img-thumbnail" width=150 /></td>
-              <td>
-                  <button class="btn btn-info" onclick="hospitals.update('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
-                  <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button>
-                  <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
-              </td>
-            </tr>
-          `;
-          $("#modal-1").modal("hide");
+
+          $("tbody").append(`
+          <tr id="row-${snapShot.id}">
+            <td id="name">${hospitalData.name}</td>
+            <td id="address">${hospitalData.address}</td>
+            <td id="bed_numbers">${hospitalData.bed_numbers}</td>
+            <td id="logo"><img src="${hospitalData.logo}" class="img-thumbnail" width=150 /></td>
+            <td>
+                <button class="btn btn-info" onclick="hospitals.update('${snapShot.id}')"><i class="fas fa-pencil-alt"></i></button>
+                <button class="btn btn-danger" onclick="hospitals.remove('${snapShot.id}')"><i class="fas fa-trash"></i></button>
+                <a href="patient.html?hospitalId=${snapShot.id}" class="btn btn-warning my-1"><i class="fas fa-procedures"></i></a>
+            </td>
+          </tr>
+        `);
           Swal.fire(
             "Thêm mới thành công!",
             "Thông tin bệnh viện đã được thêm.",
             "success"
-          );
+          ).then(() => {
+            $("#modal-1").modal("hide");
+          });
         })
         .catch((error) => console.log(error));
     });
@@ -160,9 +164,9 @@ window.hospitals = {
           let newData = {
             name: $("#modal-2 .modal-body input[name=name]").val(),
             address: $("#modal-2 .modal-body input[name=address]").val(),
-            bed_numbers: parseInt($(
-              "#modal-2 .modal-body input[name=bed_numbers]"
-            ).val()),
+            bed_numbers: parseInt(
+              $("#modal-2 .modal-body input[name=bed_numbers]").val()
+            ),
             logo: $("#modal-2 .modal-body input[name=logo]").val()
               ? $("#modal-2 .modal-body input[name=logo]").val()
               : defaultImage.hospitals,
@@ -225,7 +229,7 @@ window.hospitals = {
           required: true,
           number: true,
           min: 1,
-          max: 2000   ,
+          max: 2000,
         },
         logo: {
           required: true,
@@ -251,7 +255,7 @@ window.hospitals = {
         logo: {
           required: "Nhập logo bệnh viện",
           url: "Chỉ cho phép nhập logo theo link",
-          extension: "Định dạng logo chưa hợp lệ"
+          extension: "Định dạng logo chưa hợp lệ",
         },
       },
     });
